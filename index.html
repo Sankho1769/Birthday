@@ -20,16 +20,25 @@
         .nav-panel, #navToggleIcon, #navToggleX {
             transition: all 0.3s ease-in-out;
         }
+        
         .nav-panel {
             -ms-overflow-style: none;  
-            scrollbar-width: none;  
+            scrollbar-width: thin;
+            scrollbar-color: #4c1d95 #111827; 
         }
         .nav-panel::-webkit-scrollbar {
-            display: none; 
+            width: 8px;
+        }
+        .nav-panel::-webkit-scrollbar-track {
+            background: #111827; 
+        }
+        .nav-panel::-webkit-scrollbar-thumb {
+            background-color: #4c1d95; 
+            border-radius: 4px; 
         }
         
         #desktopNav {
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         h1, h2, h3 {
@@ -217,10 +226,10 @@
         }
 
         @media (min-width: 768px) {
-            .sequence-text-style { font-size: 2.5rem; }
-            .sequence-text-style-long { font-size: 2.5rem; }
-            .sequence-text-style-bold { font-size: 4rem; }
-            .sequence-text-style-transition { font-size: 2.5rem; }
+            .sequence-text-style { font-size: 2.25rem; }
+            .sequence-text-style-long { font-size: 2.25rem; }
+            .sequence-text-style-bold { font-size: 3.5rem; }
+            .sequence-text-style-transition { font-size: 2.25rem; }
         }
 
         @media (max-width: 767px) {
@@ -247,7 +256,7 @@
             left: 50%; 
             transform: translate(-50%, -50%); 
             width: 90%;
-            max-width: 800px; 
+            max-width: 1000px; 
             z-index: 40; 
             min-height: 200px; 
             display: flex;
@@ -267,13 +276,11 @@
             50% { border-color: #fff; }
         }
         
-        /* === REALISTIC STAGE STYLES === */
         .stage-container {
             perspective: 1500px;
             overflow: hidden;
         }
         
-        /* Realistic Curtains with Folds */
         .curtain-side {
             background: repeating-linear-gradient(90deg, 
                 #3a0202 0%, 
@@ -292,7 +299,6 @@
         .curtain-left { left: 0; }
         .curtain-right { right: 0; }
 
-        /* Valance (Top Curtain) */
         .curtain-top {
             position: absolute;
             top: -5%;
@@ -309,7 +315,6 @@
             z-index: 25;
         }
 
-        /* Realistic Wooden Floor */
         .stage-floor {
             position: absolute;
             bottom: -20%;
@@ -329,7 +334,6 @@
             z-index: 5;
         }
 
-        /* Volumetric Light Beam (God Rays) */
         .volumetric-light {
             position: absolute;
             top: -20%;
@@ -345,7 +349,6 @@
             clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
         }
 
-        /* Floating dust particles effect animation */
         @keyframes floatParticles {
             0% { background-position: 0 0; }
             100% { background-position: 100px 100px; }
@@ -361,10 +364,32 @@
             mask-image: linear-gradient(to bottom, black 0%, transparent 80%);
         }
 
-        /* Mic Stand Improvements */
         .mic-head-grid {
             background-image: radial-gradient(#222 1px, transparent 1px);
             background-size: 3px 3px;
+        }
+        
+        .nav-btn-glow:hover {
+            box-shadow: 0 0 15px rgba(236, 72, 153, 0.6);
+            border-color: rgba(236, 72, 153, 0.8);
+            background-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .cursor-trail {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            margin-left: -6px;
+            margin-top: -6px;
+            animation: cursorTrailAnim 0.6s ease-out forwards;
+        }
+
+        @keyframes cursorTrailAnim {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(0.2); opacity: 0; }
         }
     </style>
 </head>
@@ -372,7 +397,6 @@
 
     <div id="app-container" class="relative w-full h-full">
 
-        <!-- LOCK SCREEN -->
         <div id="lock-screen" class="w-full h-full flex flex-col items-center justify-center p-4 sm:p-8 relative overflow-hidden text-white">
             <div class="relative z-10 w-full max-w-lg p-6 sm:p-12 bg-gray-900/80 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-700">
                 <h1 class="text-3xl sm:text-5xl font-bold text-pink-500 text-center mb-6" style="font-family: 'Pacifico', cursive;">
@@ -386,7 +410,6 @@
             <div id="star-container-lock" class="absolute inset-0 w-full h-full pointer-events-none"></div>
         </div>
 
-        <!-- INITIAL SCREEN -->
         <div id="initial-screen" class="hidden w-full h-full flex flex-col items-center justify-center p-4 sm:p-8 relative overflow-hidden">
             <div id="star-container" class="absolute inset-0 w-full h-full pointer-events-none"></div>
 
@@ -405,7 +428,6 @@
             </div>
         </div>
 
-        <!-- STEP 1 SCREEN -->
         <div id="step1-screen" class="hidden w-full h-full overflow-hidden flex items-center justify-center p-4">
             
             <div id="sprinkle-container-1" class="absolute top-0 left-0 w-full h-full pointer-events-none z-10"></div>
@@ -433,47 +455,35 @@
 
         <div id="main-show-screen" class="hidden w-full h-full flex flex-col items-center justify-center bg-black overflow-hidden p-4 sm:p-8" id="mainContent">
             
-            <!-- REALISTIC STAGE ENVIRONMENT (Desktop Only Background) -->
             <div id="stage-environment" class="hidden md:block absolute inset-0 w-full h-full pointer-events-none stage-container bg-[#1a0505]">
                 
-                <!-- Background Wall -->
                 <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
                 
-                <!-- Stage Curtains -->
                 <div class="curtain-side curtain-left"></div>
                 <div class="curtain-side curtain-right"></div>
                 <div class="curtain-top"></div>
                 
-                <!-- Stage Floor -->
                 <div class="stage-floor"></div>
             
-                <!-- Lighting Effects -->
                 <div class="volumetric-light"></div>
                 <div class="stage-particles"></div>
             </div>
 
-            <!-- Realistic Standing Mic (Desktop Only - 'hidden md:flex') -->
             <div id="mic-stand" class="hidden md:flex absolute bottom-[10vh] left-1/2 -translate-x-1/2 z-10 flex-col items-center opacity-0 transition-opacity duration-1000 scale-100 origin-bottom">
-                <!-- Mic Head -->
                 <div class="relative w-12 h-16 bg-gradient-to-r from-gray-400 to-gray-200 rounded-full border-2 border-gray-400 shadow-[0_0_20px_rgba(255,255,255,0.6)] overflow-hidden z-20">
                         <div class="mic-head-grid absolute inset-0 opacity-60"></div>
                         <div class="absolute inset-0 bg-gradient-to-tr from-black/50 to-transparent"></div>
                 </div>
-                <!-- Connector/Neck -->
                 <div class="w-4 h-6 bg-gradient-to-r from-gray-800 to-gray-600 z-10 mt-[-2px]"></div>
-                <!-- Main Pole -->
                 <div class="w-2 h-[45vh] bg-gradient-to-r from-gray-400 via-white to-gray-400 shadow-lg z-10"></div>
-                <!-- Round Base -->
                 <div class="w-32 h-8 bg-[#111] rounded-[50%] border-t border-gray-700 shadow-[0_10px_20px_rgba(0,0,0,0.8)] mt-[-4px] z-10"></div>
             </div>
 
-            <!-- LAMP (Mobile Only) -->
             <div id="lamp-cord" class="lamp-cord"></div>
             <div id="lamp-shade" class="lamp-shade">
                 <div id="lamp-glow" class="lamp-glow"></div>
             </div>
 
-            <!-- Spotlights (Dynamic) -->
             <div id="spotlight-red" class="spotlight"></div>
             <div id="spotlight-orange" class="spotlight"></div>
             <div id="spotlight-yellow" class="spotlight"></div>
@@ -488,8 +498,8 @@
             </div>
 
             <div id="final-photo-container" class="relative z-[50] opacity-0 transition-opacity duration-1000 scale-90 transform w-full px-4"
-                 style="position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%) scale(0.9);">
-                <img src="Diwali.jpg" alt="Happy Birthday" class="rounded-lg shadow-2xl border-4 border-white w-full max-w-xs md:max-w-md h-auto mx-auto" onerror="this.src='https://placehold.co/600x400/8b5cf6/ffffff?text=Happy+Birthday';">
+                 style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9);">
+                <img src="Main1.jpg" alt="Happy Birthday" class="rounded-lg shadow-2xl border-4 border-white w-full max-w-xs md:max-w-md max-h-[60vh] object-contain mx-auto" onerror="this.src='https://placehold.co/600x400/8b5cf6/ffffff?text=Happy+Birthday';">
                 
                 <h2 id="special-wish" class="text-2xl sm:text-4xl text-white text-center mt-6 md:mt-8" style="font-family: 'Gochi Hand', cursive; text-shadow: 0 0 10px #f0abfc;">
                     Happy Birthday to the one who makes the world brighter. ✨
@@ -499,118 +509,104 @@
             <div id="sprinkle-container-final" class="absolute top-0 left-0 w-full h-full pointer-events-none"></div>
         </div>
 
-        <!-- NAV TOGGLE BUTTON -->
-        <button id="navToggle" class="hidden fixed top-6 left-6 z-[70] p-2 bg-purple-600 text-white rounded-full shadow-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
-            <svg id="navToggleIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-8 6h8"></path></svg>
-            <svg id="navToggleX" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        <button id="navToggle" class="hidden fixed top-6 left-6 z-[90] p-3 bg-purple-600 text-white rounded-full shadow-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-transform transform hover:scale-110">
+            <svg id="navToggleIcon" class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-8 6h8"></path></svg>
+            <svg id="navToggleX" class="w-8 h-8 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
 
-        <!-- UNIFIED DESKTOP SIDEBAR NAV (Hidden on Mobile, Toggles on Desktop) -->
-        <nav id="desktopNav" class="nav-panel fixed left-0 top-0 bottom-0 z-[60] w-72 bg-gray-900/95 backdrop-blur-xl border-r border-purple-500/30 flex-col overflow-y-auto hidden md:flex -translate-x-full pt-20 pb-8 px-6 shadow-[10px_0_30px_rgba(0,0,0,0.5)]">
-            
-            <div class="mb-8">
-                <h3 class="text-pink-400 font-bold mb-4 uppercase text-xs tracking-wider border-b border-purple-800 pb-2">Main Hall</h3>
-                <div class="flex flex-col space-y-2">
-                    <a href="index.html" class="nav-link block p-2 rounded-md hover:bg-purple-800/50 transition-colors text-white festive-text text-lg">Home</a>
-                    <a href="Special.html" class="nav-link block p-2 rounded-md hover:bg-purple-800/50 transition-colors text-white festive-text text-lg">Special</a>
-                    <a href="letter.html" class="nav-link block p-2 rounded-md hover:bg-purple-800/50 transition-colors text-white festive-text text-lg">Letter</a>
+        <nav id="desktopNav" class="nav-panel fixed left-0 top-0 bottom-0 z-[60] w-[650px] max-w-[90vw] bg-gray-900/95 backdrop-blur-xl border-r border-purple-500/30 flex-col hidden md:flex -translate-x-full shadow-[20px_0_50px_rgba(0,0,0,0.8)]">
+            <div class="p-8 pt-24 h-full overflow-y-auto w-full">
+                <h3 class="text-4xl text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-500 font-bold mb-8 text-center drop-shadow-lg" style="font-family: 'Pacifico', cursive;">
+                    Magical Destinations
+                </h3>
+                
+                <div class="grid grid-cols-2 gap-4 w-full">
+                    <a href="index.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Home</a>
+                    <a href="Cake.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Cake</a>
+                    <a href="21_Wish.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">21 Door</a>
+                    <a href="chat.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Heaven</a>
+                    <a href="Diary.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Diary</a>
+                    <a href="anatomy.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Anatomy</a>
+                    <a href="Box.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Box</a>
+                    <a href="Special.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Special</a>
+                    <a href="color.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Colors</a>
+                    <a href="you.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">You</a>
+                    <a href="Teacher.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Teacher</a>
+                    <a href="Universe.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Universe</a>
+                    <a href="The_River.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">River</a>
+                    <a href="Mountain.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Mountain</a>
+                    <a href="Skill.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Skills</a>
+                    <a href="Paper_Star.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Paper Star</a>
+                    <a href="Carttoon.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Cartoon</a>
+                    <a href="Periodik_table.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Periodic</a>
+                    <a href="Concept.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Concept</a>
+                    <a href="Calender.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Calendar</a>
+                    <a href="Perspective.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Perspective</a>
+                    <a href="Santa.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Santa</a>
+                    <a href="Presence.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Presence</a>
+                    <a href="Cloud.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Cloud</a>
+                    <a href="Ink.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Paint</a>
+                    <a href="Butterfly.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Butterfly</a>
+                    <a href="Weather.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Weather</a>
+                    <a href="Spotlight.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Spotlight</a>
+                    <a href="Room.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Room</a>
+                    <a href="Radio.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Radio</a>
+                    <a href="Food.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Food</a>
+                    <a href="Music.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Music</a>
+                    <a href="letter.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Letter</a>
+                    <a href="Msg.html" class="nav-link nav-btn-glow block p-3 rounded-lg bg-gray-800/50 border border-gray-700 text-center text-white festive-text text-xl transition-all duration-300">Message</a>
+                </div>
+                
+                <div class="mt-8 text-center">
+                    <p class="text-gray-400 text-sm italic">You are the center of this Universe ✨</p>
                 </div>
             </div>
-
-            <div class="mb-8">
-                <h3 class="text-purple-400 font-bold mb-4 uppercase text-xs tracking-wider border-b border-purple-800 pb-2">The World</h3>
-                <div class="flex flex-col space-y-2">
-                    <a href="Universe.html" class="nav-link block p-2 rounded-md hover:bg-purple-800/50 transition-colors text-gray-200 festive-text">Universe</a>
-                    <a href="anatomy.html" class="nav-link block p-2 rounded-md hover:bg-purple-800/50 transition-colors text-gray-200 festive-text">Anatomy</a>
-                    <a href="chat.html" class="nav-link block p-2 rounded-md hover:bg-purple-800/50 transition-colors text-gray-200 festive-text">Heaven</a>
-                    <a href="you.html" class="nav-link block p-2 rounded-md hover:bg-purple-800/50 transition-colors text-gray-200 festive-text">You</a>
-                </div>
-            </div>
-
-            <div class="mb-8">
-                <h3 class="text-blue-400 font-bold mb-4 uppercase text-xs tracking-wider border-b border-purple-800 pb-2">The Journey</h3>
-                <div class="flex flex-col space-y-2">
-                    <a href="Diary.html" class="nav-link block p-2 rounded-md hover:bg-purple-800/50 transition-colors text-gray-300 festive-text">Diary</a>
-                    <a href="Teacher.html" class="nav-link block p-2 rounded-md hover:bg-purple-800/50 transition-colors text-gray-300 festive-text">Teacher</a>
-                    <a href="The_River.html" class="nav-link block p-2 rounded-md hover:bg-purple-800/50 transition-colors text-gray-300 festive-text">The River</a>
-                    <a href="Mountain.html" class="nav-link block p-2 rounded-md hover:bg-purple-800/50 transition-colors text-gray-300 festive-text">Mountain</a>
-                    <a href="Skill.html" class="nav-link block p-2 rounded-md hover:bg-purple-800/50 transition-colors text-gray-300 festive-text">Skills</a>
-                </div>
-            </div>
-
-            <div class="mb-8">
-                <h3 class="text-yellow-400 font-bold mb-4 uppercase text-xs tracking-wider border-b border-purple-800 pb-2">Treasures</h3>
-                <div class="flex flex-col space-y-2">
-                    <a href="Box.html" class="nav-link block p-2 rounded-md hover:bg-purple-800/50 transition-colors text-gray-300 festive-text">Box</a>
-                    <a href="color.html" class="nav-link block p-2 rounded-md hover:bg-purple-800/50 transition-colors text-gray-300 festive-text">Colors</a>
-                    <a href="Paper_Star.html" class="nav-link block p-2 rounded-md hover:bg-purple-800/50 transition-colors text-gray-300 festive-text">Paper Star</a>
-                    <a href="Carttoon.html" class="nav-link block p-2 rounded-md hover:bg-purple-800/50 transition-colors text-gray-300 festive-text">Cartoon</a>
-                    <a href="Santa.html" class="nav-link block p-2 rounded-md hover:bg-purple-800/50 transition-colors text-gray-300 festive-text">Santa</a>
-                </div>
-            </div>
-            
-            <div class="mb-12">
-                <h3 class="text-green-400 font-bold mb-4 uppercase text-xs tracking-wider border-b border-purple-800 pb-2">Extras</h3>
-                <div class="flex flex-col space-y-2">
-                    <a href="Msg.html" class="nav-link block p-2 rounded-md hover:bg-purple-800/50 transition-colors text-gray-300 festive-text">Message</a>
-                    <a href="21_Wish.html" class="nav-link block p-2 rounded-md hover:bg-purple-800/50 transition-colors text-gray-300 festive-text">21 Door</a>
-                    <a href="Cake.html" class="nav-link block p-2 rounded-md hover:bg-purple-800/50 transition-colors text-gray-300 festive-text">Cake</a>
-                    <a href="Music.html" class="nav-link block p-2 rounded-md hover:bg-purple-800/50 transition-colors text-gray-300 festive-text">Music</a>
-                    <a href="Periodik_table.html" class="nav-link block p-2 rounded-md hover:bg-purple-800/50 transition-colors text-gray-300 festive-text">Periodic</a>
-                    <a href="Concept.html" class="nav-link block p-2 rounded-md hover:bg-purple-800/50 transition-colors text-gray-300 festive-text">Concept</a>
-                    <a href="Calender.html" class="nav-link block p-2 rounded-md hover:bg-purple-800/50 transition-colors text-gray-300 festive-text">Calendar</a>
-                    <a href="Perspective.html" class="nav-link block p-2 rounded-md hover:bg-purple-800/50 transition-colors text-gray-300 festive-text">Perspective</a>
-                    <a href="Presence.html" class="nav-link block p-2 rounded-md hover:bg-purple-800/50 transition-colors text-gray-300 festive-text">Presence</a>
-                </div>
-            </div>
-
         </nav>
         
-        <!-- MOBILE NAV (4 SLIDING PANELS) -->
-        <nav id="topNav" class="nav-panel md:hidden fixed top-0 left-0 right-0 z-[60] h-16 bg-purple-600 text-yellow-100 shadow-md flex items-center justify-center space-x-6 -translate-y-full">
-            <a href="index.html" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Home</a>
-            <a href="Special.html" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Special</a>
+        <nav id="topNav" class="nav-panel md:hidden fixed top-0 left-0 right-0 z-[80] h-16 bg-purple-600 text-yellow-100 shadow-md flex items-center justify-center space-x-6 -translate-y-full">
+            <a href="Msg.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Massege</a>
             <a href="letter.html" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Letter</a>
+            <a href="Music.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Music</a>
         </nav>
-
-        <nav id="bottomNav" class="nav-panel md:hidden fixed bottom-0 left-0 right-0 z-[60] h-16 bg-purple-600 text-yellow-100 shadow-md flex items-center justify-center space-x-6 translate-y-full">
-            <a href="anatomy.html" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Anatomy</a>
-            <a href="chat.html" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Heaven</a>
-            <a href="you.html" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">You</a>
-        </nav>
-
-        <nav id="leftNav" class="nav-panel md:hidden fixed left-0 top-0 bottom-0 z-[60] w-20 bg-purple-800 text-yellow-100 shadow-md flex flex-col items-center space-y-6 -translate-x-full overflow-y-auto py-20">
-            <a href="Diary.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Diary</a>
-            <a href="Universe.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Universe</a>
-            <a href="Box.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Box</a>
-            <a href="color.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Color</a>
-            <a href="Teacher.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Teacher</a>
-            <a href="The_River.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">River</a>
-            <a href="Mountain.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Mountain</a>
+        
+        <nav id="bottomNav" class="nav-panel md:hidden fixed bottom-0 left-0 right-0 z-[80] h-16 bg-purple-600 text-yellow-100 shadow-md flex items-center justify-center space-x-6 translate-y-full">
+            <a href="Skill.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Skill</a>
             <a href="Paper_Star.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Paper Star</a>
             <a href="Carttoon.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Cartoon</a>
+        </nav>
+        
+        <nav id="leftNav" class="nav-panel md:hidden fixed left-0 top-0 bottom-0 z-[60] w-20 bg-purple-800 text-yellow-100 shadow-md flex flex-col items-center space-y-1 -translate-x-full overflow-y-auto py-20">
+            <a href="index.html" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Home</a>
+            <a href="Cake.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Cake</a>
+            <a href="21_Wish.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">21_Door</a>
+            <a href="chat.html" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Heaven</a>
+            <a href="Diary.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Diary</a>
+            <a href="anatomy.html" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Anatomy</a>
+            <a href="Box.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Box</a>
+            <a href="Special.html" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Special</a>
+            <a href="color.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Color</a>
+            <a href="you.html" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">You</a>
+            <a href="Teacher.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Teacher</a>
+            <a href="Universe.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Universe</a>
+            <a href="The_River.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">River</a>
+            <a href="Mountain.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Mountain</a>
+        </nav>
+        
+        <nav id="rightNav" class="nav-panel md:hidden fixed right-0 top-0 bottom-0 z-[60] w-20 bg-purple-800 text-yellow-100 shadow-md flex flex-col items-center space-y-1 translate-x-full overflow-y-auto py-20">
+            <a href="Periodik_table.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Periodik_table</a>
+            <a href="Concept.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Concept</a>
+            <a href="Calender.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Calender</a>
+            <a href="Perspective.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Perspective</a>
             <a href="Santa.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Santa</a>
+            <a href="Presence.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Presence</a>
             <a href="Cloud.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Cloud</a>
             <a href="Ink.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Paint</a>
             <a href="Butterfly.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Butterfly</a>
             <a href="Weather.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Weather</a>
-        </nav>
-
-        <nav id="rightNav" class="nav-panel md:hidden fixed right-0 top-0 bottom-0 z-[60] w-20 bg-purple-800 text-yellow-100 shadow-md flex flex-col items-center space-y-6 translate-x-full overflow-y-auto py-20">
-            <a href="Skill.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Skill</a>
-            <a href="Msg.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Massege</a>
-            <a href="21_Wish.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">21_Door</a>
-            <a href="Cake.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Cake</a>
-            <a href="Periodik_table.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Periodik_table</a>
-            <a href="Presence.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Presence</a>
-            <a href="Concept.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Concept</a>
-            <a href="Calender.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Calender</a>
-            <a href="Perspective.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Perspective</a>
             <a href="Spotlight.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Spotlight</a>
             <a href="Room.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Room</a>
             <a href="Radio.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Radio</a>
             <a href="Food.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Food</a>
-            <a href="Music.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-colors duration-200 festive-text">Music</a>
         </nav>
 
         <div id="no-modal" class="hidden fixed inset-0 w-full h-full flex items-center justify-center z-[100]">
@@ -956,7 +952,7 @@
         if (step1OkBtn) {
             step1OkBtn.addEventListener('click', async () => {
                 try {
-                     await Tone.start();
+                      await Tone.start();
                 } catch(e) {}
                 
                 if (step1Screen) step1Screen.classList.add('hidden');
@@ -965,16 +961,10 @@
                 if (mainShowScreen) mainShowScreen.classList.remove('hidden');
                 mainShowScreen.style.display = 'flex';
                 
-                // Show Mic on all screens
                 if (micStand) {
                     micStand.style.opacity = '1';
                 }
                 
-                // Ensure lamp elements are hidden if they exist
-                // REMOVED these lines as requested to fix mobile lamp
-                // if (lampCord) lampCord.style.display = 'none';
-                // if (lampShade) lampShade.style.display = 'none';
-
                 startNewSequence();
             });
         }
@@ -986,39 +976,16 @@
             });
         }
         
-        function createContentClickListener(element) {
-            if (element) {
-                element.addEventListener('click', (e) => {
-                    if (areNavsOpen) {
-                        if (e.target === element || e.target === textSequenceContainer || e.target === finalPhotoContainer) {
-                            closeAllNavs();
-                        }
-                    }
-                });
-            }
-        }
-        
-        if (step1Screen) {
-            step1Screen.addEventListener('click', (e) => {
-                const contentCard = step1Screen.querySelector('.content-card');
-                if (areNavsOpen && contentCard && !contentCard.contains(e.target)) {
+        document.addEventListener('click', (e) => {
+            if (areNavsOpen) {
+                const clickedInsideNav = e.target.closest('.nav-panel');
+                const clickedOnToggle = e.target.closest('#navToggle');
+                
+                if (!clickedInsideNav && !clickedOnToggle) {
                     closeAllNavs();
                 }
-            });
-        }
-
-        createContentClickListener(mainShowScreen); 
-        if (textSequenceContainer) {
-            textSequenceContainer.addEventListener('click', () => {
-                if (areNavsOpen) closeAllNavs();
-            });
-        }
-        if (finalPhotoContainer) {
-            finalPhotoContainer.addEventListener('click', () => {
-                if (areNavsOpen) closeAllNavs();
-            });
-        }
-
+            }
+        });
 
         navLinks.forEach(link => {
             link.addEventListener('click', (e) => {
@@ -1094,9 +1061,9 @@
                 "Nor India,",
                 "Nor even Asia…",
                 "But from the entire Universe 🌌",
-                "💫✨ The one and only… Missssss Universe✨💫",
+                "💫✨ The one and only… Missssss universe✨💫",
                 "And now, ladies and gentlemen \nPlease make a BIG round of applause 👏👏👏",
-                "for the birthday girl who defines beauty, brilliance, and beyond \nMiss Universe 🎂💖"
+                "for the birthday girl who defines beauty, brilliance, and beyond \nMiss universe 🎂💖"
             ];
             
             var typewriter = new TxtType(sequenceText, linesToType, 2000);
@@ -1159,6 +1126,27 @@
 
             console.log('GRAND FINALE!');
         }
+
+        document.addEventListener('mousemove', (e) => {
+            if (window.innerWidth < 768) return; 
+
+            const trail = document.createElement('div');
+            trail.className = 'cursor-trail';
+            
+            trail.style.left = `${e.clientX}px`;
+            trail.style.top = `${e.clientY}px`;
+            
+            const trailColors = ['#f87171', '#ec4899', '#a855f7', '#3b82f6', '#facc15', '#4ade80', '#2dd4bf'];
+            const color = trailColors[Math.floor(Math.random() * trailColors.length)];
+            trail.style.backgroundColor = color;
+            trail.style.boxShadow = `0 0 10px ${color}`;
+
+            document.body.appendChild(trail);
+
+            setTimeout(() => {
+                trail.remove();
+            }, 600);
+        });
     </script>
 </body>
 </html>

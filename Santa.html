@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Christmas Birthday Wish</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Inter:wght@400;500;700&family=Pacifico&display=swap" rel="stylesheet">
+
+    <style>
+        .nav-panel, #mainContent, #navToggleIcon, #navToggleX, #desktopNav {
+            transition: all 0.3s ease-in-out;
+        }
+        #mainContent, .nav-panel, #desktopNav {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        #mainContent::-webkit-scrollbar,
+        .nav-panel::-webkit-scrollbar,
+        #desktopNav::-webkit-scrollbar {
+            display: none;
+        }
+        .festive-text {
+            font-family: 'Gochi Hand', cursive;
+        }
+        
+        @media (min-width: 768px) {
+            body {
+                cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24' fill='none' stroke='%2338bdf8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><line x1='2' y1='12' x2='22' y2='12'></line><line x1='12' y1='2' x2='12' y2='22'></line><line x1='4.93' y1='4.93' x2='19.07' y2='19.07'></line><line x1='4.93' y1='19.07' x2='19.07' y2='4.93'></line></svg>") 16 16, auto;
+            }
+        }
+
+        body {
+            background-color: #000000;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            color: #d1d5db;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Pacifico', cursive;
+        }
+
+        button {
+            user-select: none;
+        }
+        
+        #mainContent {
+            position: absolute;
+            inset: 0;
+            min-height: 100vh;  
+            overflow-y: hidden;
+            padding-top: 4rem;
+        }
+
+        .desktop-bg-animate {
+            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #0f172a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .festive-bg {
+            background: linear-gradient(135deg, #0d1226 0%, #000000 100%);
+        }
+
+        .card-festive {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3), 0 0 20px rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.4);
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .card-festive:hover {
+            transform: translateY(-5px);
+        }
+
+        .bg-candy-cane {
+            background: repeating-linear-gradient(
+                45deg,
+                #ef4444,
+                #ef4444 10px,
+                #ffffff 10px,
+                #ffffff 20px,
+                #22c55e 20px,
+                #22c55e 30px,
+                #ffffff 30px,
+                #ffffff 40px
+            );
+        }
+
+        .text-shadow-simple {
+            text-shadow: 2px 2px 0px rgba(239, 68, 68, 0.1); 
+        }
+        .full-screen-stage {
+            height: 100%; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s ease-in-out;
+            position: relative;
+        }
+
+        #stage-0 {
+            background-color: #e0f2fe;
+            background-image: 
+                radial-gradient(#ffffff 1.5px, transparent 0), 
+                radial-gradient(#ffffff 1.5px, transparent 0);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+        }
+
+        #stage-1 {
+            background: radial-gradient(ellipse at bottom, #0d1226 0%, #000000 100%);
+            background-image: 
+                radial-gradient(1.5px 1.5px at 20px 30px, #fff, rgba(0,0,0,0)), 
+                radial-gradient(1.5px 1.5px at 90px 70px, #fff, rgba(0,0,0,0)), 
+                radial-gradient(1.5px 1.5px at 150px 10px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 50px 120px, #eee, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 10px 100px, #eee, rgba(0,0,0,0)),
+                radial-gradient(0.5px 0.5px at 120px 40px, #ddd, rgba(0,0,0,0)),
+                radial-gradient(0.5px 0.5px at 200px 150px, #ddd, rgba(0,0,0,0));
+            background-size: 250px 250px;
+        }
+        
+        .moon-container {
+            width: 300px;
+            height: 300px;
+            position: relative;
+            border-radius: 50%;
+            z-index: 10;
+            overflow: hidden; 
+            background: transparent;
+            
+            box-shadow: inset -20px -20px 60px rgba(0,0,0,0.8), 
+                        inset 5px 5px 20px rgba(255,255,255,0.4),
+                        0 0 60px rgba(255,255,255,0.1); 
+            transition: box-shadow 1.5s ease;
+        }
+
+        .moon-container::after {
+            content: '';
+            position: absolute;
+            top: 10%;
+            left: 15%;
+            width: 35%;
+            height: 25%;
+            border-radius: 50%;
+            background: radial-gradient(ellipse at center, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 70%);
+            filter: blur(6px);
+            z-index: 30; 
+            pointer-events: none;
+        }
+        
+        @media (min-width: 768px) {
+            .moon-container {
+                width: min(400px, 35vw);
+                height: min(400px, 35vw);
+            }
+        }
+        @media (min-width: 1280px) {
+            .moon-container {
+                width: 450px;
+                height: 450px;
+            }
+        }
+
+        .moon-slider {
+            display: flex;
+            width: 200%; 
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            will-change: transform;
+        }
+
+        .moon-panel {
+            width: 50%; 
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .moon-spinning {
+            animation: spinSlide 4s ease-in-out forwards;
+        }
+
+        @keyframes spinSlide {
+            0% { transform: translateX(0%); filter: blur(0px); }
+            40% { filter: blur(8px); } 
+            60% { filter: blur(8px); }
+            100% { transform: translateX(-50%); filter: blur(0px); }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: inset -20px -20px 60px rgba(0,0,0,0.8), inset 5px 5px 20px rgba(255,255,255,0.4), 0 0 50px rgba(255,255,255,0.8); }
+            50% { box-shadow: inset -20px -20px 60px rgba(0,0,0,0.8), inset 5px 5px 20px rgba(255,255,255,0.4), 0 0 90px rgba(255,255,255,1); }
+        }
+
+        .moon-container.magical {
+            animation: pulse-glow 3s infinite ease-in-out;
+        }
+
+        #moon-instruction {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 60; 
+            pointer-events: none;
+            transition: all 0.5s ease;
+        }
+        
+        .moon-tracker-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.2);
+            transition: all 0.5s ease;
+            box-shadow: 0 0 5px rgba(255,255,255,0.1);
+        }
+        .moon-tracker-dot.active {
+            transform: scale(1.5);
+            box-shadow: 0 0 15px currentColor;
+        }
+
+        .hanging-light {
+            animation: swing 3s ease-in-out infinite alternate;
+            transform-origin: top center;
+        }
+        @keyframes swing {
+            0% { transform: rotate(5deg); }
+            100% { transform: rotate(-5deg); }
+        }
+        
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+        .animate-wiggle {
+            animation: wiggle 2s ease-in-out infinite;
+        }
+        
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin-slow 8s linear infinite;
+        }
+        
+        @keyframes float-y {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        .animate-float {
+            animation: float-y 4s ease-in-out infinite;
+        }
+        
+        @keyframes shake-x {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        .animate-shake {
+            animation: shake-x 1s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        .gift-pop-transition {
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ffd300;
+            top: -10px;
+            z-index: 5;
+            animation: confettiFall linear forwards;
+        }
+        @keyframes confettiFall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+        
+        .floating-balloon {
+            position: absolute;
+            bottom: -100px;
+            font-size: 4rem;
+            animation: floatUp 8s ease-in-out infinite;
+            opacity: 0.8;
+            z-index: 1;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-50vh) rotate(10deg); }
+            100% { transform: translateY(-120vh) rotate(-10deg); }
+        }
+        
+        .snow-particle {
+            position: fixed;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 100;
+            opacity: 0.8;
+            animation: fadeOut 1s forwards;
+        }
+        @keyframes fadeOut {
+            to { opacity: 0; transform: translateY(20px); }
+        }
+        
+        .stage-snow {
+            position: absolute;
+            top: -10px;
+            color: white;
+            font-size: 1.5rem;
+            animation: snowDrop linear infinite;
+            text-shadow: 0 0 5px rgba(255,255,255,0.8);
+        }
+        @keyframes snowDrop {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="antialiased bg-black overflow-hidden text-gray-800 md:desktop-bg-animate">
+    
+    <button id="navToggle" class="fixed top-6 left-6 z-[90] p-2 bg-blue-600 text-yellow-300 rounded-full shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+        <svg id="navToggleIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-8 6h8"></path></svg>
+        <svg id="navToggleX" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    </button>
+
+    <nav id="topNav" class="nav-panel md:hidden fixed top-0 left-0 right-0 z-[85] h-16 bg-indigo-900 text-yellow-300 shadow-md flex items-center justify-center space-x-6 -translate-y-full">
+        <a href="Msg.html" onclick="handleNavClick('Message');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">Massege</a>
+        <a href="letter.html" onclick="handleNavClick('Letter');" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-800 transition-colors duration-200 festive-text">Letter</a>
+        <a href="Music.html" onclick="handleNavClick('Music');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">Music</a>
+    </nav>
+    
+    <nav id="bottomNav" class="nav-panel md:hidden fixed bottom-0 left-0 right-0 z-[85] h-16 bg-indigo-900 text-yellow-300 shadow-md flex items-center justify-center space-x-6 translate-y-full">
+        <a href="Skill.html" onclick="handleNavClick('Skill');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">Skill</a>
+        <a href="Paper_Star.html" onclick="handleNavClick('Paper Star');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">Paper Star</a>
+        <a href="Carttoon.html" onclick="handleNavClick('Cartoon');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">Cartoon</a>
+    </nav>
+    
+    <nav id="leftNav" class="nav-panel md:hidden fixed left-0 top-0 bottom-0 z-[80] w-20 bg-gray-900 text-cyan-300 shadow-md flex flex-col items-center space-y-2 -translate-x-full overflow-y-auto py-16">
+        <a href="index.html" onclick="handleNavClick('Home');" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-800 transition-colors duration-200 festive-text">Home</a>
+        <a href="Cake.html" onclick="handleNavClick('Cake');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">Cake</a>
+        <a href="21_Wish.html" onclick="handleNavClick('21_Door');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">21_Door</a>
+        <a href="chat.html" onclick="handleNavClick('Heaven');" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-800 transition-colors duration-200 festive-text">Heaven</a>
+        <a href="Diary.html" onclick="handleNavClick('Diary');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">Diary</a>
+        <a href="anatomy.html" onclick="handleNavClick('Anatomy');" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-800 transition-colors duration-200 festive-text">Anatomy</a>
+        <a href="Box.html" onclick="handleNavClick('Box');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">Box</a>
+        <a href="Special.html" onclick="handleNavClick('Special');" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-800 transition-colors duration-200 festive-text">Special</a>
+        <a href="color.html" onclick="handleNavClick('Color');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">Color</a>
+        <a href="you.html" onclick="handleNavClick('You');" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-800 transition-colors duration-200 festive-text">You</a>
+        <a href="Teacher.html" onclick="handleNavClick('Teacher');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">Teacher</a>
+        <a href="Universe.html" onclick="handleNavClick('Universe');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">Universe</a>
+        <a href="The_River.html" onclick="handleNavClick('River');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">River</a>
+        <a href="Mountain.html" onclick="handleNavClick('Mountain');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">Mountain</a>
+    </nav>
+    
+    <nav id="rightNav" class="nav-panel md:hidden fixed right-0 top-0 bottom-0 z-[80] w-20 bg-gray-900 text-cyan-300 shadow-md flex flex-col items-center space-y-2 translate-x-full overflow-y-auto py-16">
+        <a href="Periodik_table.html" onclick="handleNavClick('Periodik_table');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">Periodik_table</a>
+        <a href="Concept.html" onclick="handleNavClick('Concept');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">Concept</a>
+        <a href="Calender.html" onclick="handleNavClick('Calender');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">Calender</a>
+        <a href="Perspective.html" onclick="handleNavClick('Perspective');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">Perspective</a>
+        <a href="Santa.html" onclick="handleNavClick('Santa');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">Santa</a>
+        <a href="Presence.html" onclick="handleNavClick('Presence');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">Presence</a>
+        <a href="Cloud.html" onclick="handleNavClick('Cloud');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">Cloud</a>
+        <a href="Ink.html" onclick="handleNavClick('Paint');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">Paint</a>
+        <a href="Butterfly.html" onclick="handleNavClick('Butterfly');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">Butterfly</a>
+        <a href="Weather.html" onclick="handleNavClick('Weather');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">Weather</a>
+        <a href="Spotlight.html" onclick="handleNavClick('Spotlight');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">Spotlight</a>
+        <a href="Room.html" onclick="handleNavClick('Room');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">Room</a>
+        <a href="Radio.html" onclick="handleNavClick('Radio');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">Radio</a>
+        <a href="Food.html" onclick="handleNavClick('Food');" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors duration-200 festive-text">Food</a>
+    </nav>
+
+    <nav id="desktopNav" class="hidden md:flex flex-col fixed left-0 top-0 bottom-0 z-[80] w-96 bg-gray-900 border-r border-indigo-900 text-cyan-300 shadow-2xl -translate-x-full pt-20 pb-10 overflow-y-auto">
+        <div class="px-6 mb-4">
+            <h2 class="text-2xl text-yellow-300 border-b border-gray-700 pb-2">Menu</h2>
+        </div>
+        <div class="grid grid-cols-2 gap-3 px-4 w-full">
+            <a href="index.html" onclick="handleNavClick('Home');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Home</a>
+            <a href="Cake.html" onclick="handleNavClick('Cake');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Cake</a>
+            <a href="21_Wish.html" onclick="handleNavClick('21_Door');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">21_Door</a>
+            <a href="chat.html" onclick="handleNavClick('Heaven');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Heaven</a>
+            <a href="Diary.html" onclick="handleNavClick('Diary');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Diary</a>
+            <a href="anatomy.html" onclick="handleNavClick('Anatomy');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Anatomy</a>
+            <a href="Box.html" onclick="handleNavClick('Box');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Box</a>
+            <a href="Special.html" onclick="handleNavClick('Special');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Special</a>
+            <a href="color.html" onclick="handleNavClick('Color');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Color</a>
+            <a href="you.html" onclick="handleNavClick('You');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">You</a>
+            <a href="Teacher.html" onclick="handleNavClick('Teacher');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Teacher</a>
+            <a href="Universe.html" onclick="handleNavClick('Universe');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Universe</a>
+            <a href="The_River.html" onclick="handleNavClick('River');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">River</a>
+            <a href="Mountain.html" onclick="handleNavClick('Mountain');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Mountain</a>
+            <a href="Skill.html" onclick="handleNavClick('Skill');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Skill</a>
+            <a href="Paper_Star.html" onclick="handleNavClick('Paper Star');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Paper Star</a>
+            <a href="Carttoon.html" onclick="handleNavClick('Cartoon');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Cartoon</a>
+            <a href="Periodik_table.html" onclick="handleNavClick('Periodik_table');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Periodik_table</a>
+            <a href="Concept.html" onclick="handleNavClick('Concept');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Concept</a>
+            <a href="Calender.html" onclick="handleNavClick('Calender');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text">Calender</a>
+            <a href="Perspective.html" onclick="handleNavClick('Perspective');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Perspective</a>
+            <a href="Santa.html" onclick="handleNavClick('Santa');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Santa</a>
+            <a href="Presence.html" onclick="handleNavClick('Presence');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Presence</a>
+            <a href="Cloud.html" onclick="handleNavClick('Cloud');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Cloud</a>
+            <a href="Ink.html" onclick="handleNavClick('Paint');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Paint</a>
+            <a href="Butterfly.html" onclick="handleNavClick('Butterfly');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Butterfly</a>
+            <a href="Weather.html" onclick="handleNavClick('Weather');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text">Weather</a>
+            <a href="Spotlight.html" onclick="handleNavClick('Spotlight');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Spotlight</a>
+            <a href="Room.html" onclick="handleNavClick('Room');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Room</a>
+            <a href="Radio.html" onclick="handleNavClick('Radio');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Radio</a>
+            <a href="Food.html" onclick="handleNavClick('Food');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Food</a>
+            <a href="Music.html" onclick="handleNavClick('Music');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Music</a>
+            <a href="letter.html" onclick="handleNavClick('Letter');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Letter</a>
+            <a href="Msg.html" onclick="handleNavClick('Message');" class="nav-link p-3 rounded-md text-sm font-medium bg-gray-800 hover:bg-indigo-700 hover:text-white transition-colors duration-200 festive-text text-center">Message</a>
+        </div>
+    </nav>
+
+    <div id="mainContent" class="pt-16">
+
+        <div id="stage-0" class="full-screen-stage p-4">
+            <div class="hidden md:block pointer-events-none fixed inset-0 z-[70]">
+                <div class="absolute top-0 left-20 hanging-light" style="animation-delay: 0s;">
+                    <div class="w-1 h-20 bg-gray-600 mx-auto"></div>
+                    <div class="w-8 h-8 rounded-full bg-red-500 shadow-[0_0_20px_rgba(239,68,68,0.8)]"></div>
+                </div>
+                <div class="absolute top-0 left-40 hanging-light" style="animation-delay: 1s;">
+                    <div class="w-1 h-12 bg-gray-600 mx-auto"></div>
+                    <div class="w-8 h-8 rounded-full bg-green-500 shadow-[0_0_20px_rgba(34,197,94,0.8)]"></div>
+                </div>
+                
+                <div class="absolute top-0 right-20 hanging-light" style="animation-delay: 0.5s;">
+                    <div class="w-1 h-16 bg-gray-600 mx-auto"></div>
+                    <div class="w-8 h-8 rounded-full bg-yellow-400 shadow-[0_0_20px_rgba(250,204,21,0.8)]"></div>
+                </div>
+                <div class="absolute top-0 right-40 hanging-light" style="animation-delay: 1.5s;">
+                    <div class="w-1 h-24 bg-gray-600 mx-auto"></div>
+                    <div class="w-8 h-8 rounded-full bg-blue-500 shadow-[0_0_20px_rgba(59,130,246,0.8)]"></div>
+                </div>
+                
+                <div class="absolute bottom-4 left-10 pointer-events-none select-none">
+                    <div class="relative group">
+                        <div class="text-[24rem] leading-none filter drop-shadow-2xl animate-wiggle" style="animation-duration: 4s;">🎄</div>
+                        <div class="absolute -bottom-2 -right-8 text-[4rem] leading-none filter drop-shadow-lg animate-bounce z-70" style="animation-duration: 3s;">🎂</div>
+                    </div>
+                </div>
+
+                <div class="absolute bottom-4 right-10 flex flex-wrap-reverse gap-4 items-end justify-end w-[500px] pointer-events-auto select-none">
+                    
+                    <div class="gift-box relative cursor-pointer group" onclick="unwrapGift(this)">
+                        <div class="gift-wrapper transform transition-transform group-hover:scale-110 animate-bounce" style="animation-delay: 0s;">
+                            <div class="text-[5rem] filter drop-shadow-lg">🎁</div>
+                        </div>
+                        <div class="gift-content absolute inset-0 flex items-center justify-center opacity-0 scale-0 gift-pop-transition">
+                            <div class="text-[5rem] filter drop-shadow-xl">💐</div>
+                        </div>
+                    </div>
+
+                    <div class="gift-box relative cursor-pointer group" onclick="unwrapGift(this)">
+                        <div class="gift-wrapper transform transition-transform group-hover:scale-110 animate-bounce" style="animation-delay: 0.2s;">
+                            <div class="text-[4.5rem] filter drop-shadow-lg">🎁</div>
+                        </div>
+                        <div class="gift-content absolute inset-0 flex items-center justify-center opacity-0 scale-0 gift-pop-transition">
+                            <div class="text-[4.5rem] filter drop-shadow-xl">⌚</div>
+                        </div>
+                    </div>
+
+                    <div class="gift-box relative cursor-pointer group" onclick="unwrapGift(this)">
+                        <div class="gift-wrapper transform transition-transform group-hover:scale-110 animate-bounce" style="animation-delay: 0.5s;">
+                            <div class="text-[5.5rem] filter drop-shadow-lg">🎁</div>
+                        </div>
+                        <div class="gift-content absolute inset-0 flex items-center justify-center opacity-0 scale-0 gift-pop-transition">
+                            <div class="text-[5rem] filter drop-shadow-xl">🍇</div>
+                        </div>
+                    </div>
+
+                    <div class="gift-box relative cursor-pointer group" onclick="unwrapGift(this)">
+                        <div class="gift-wrapper transform transition-transform group-hover:scale-110 animate-bounce" style="animation-delay: 0.1s;">
+                            <div class="text-[3.5rem] filter drop-shadow-lg">🎁</div>
+                        </div>
+                        <div class="gift-content absolute inset-0 flex items-center justify-center opacity-0 scale-0 gift-pop-transition">
+                            <div class="text-[4rem] filter drop-shadow-xl">👑</div>
+                        </div>
+                    </div>
+
+                    <div class="gift-box relative cursor-pointer group" onclick="unwrapGift(this)">
+                        <div class="gift-wrapper transform transition-transform group-hover:scale-110 animate-bounce" style="animation-delay: 0.7s;">
+                            <div class="text-[5rem] filter drop-shadow-lg">🎁</div>
+                        </div>
+                        <div class="gift-content absolute inset-0 flex items-center justify-center opacity-0 scale-0 gift-pop-transition">
+                            <div class="text-[5rem] filter drop-shadow-xl">👛</div>
+                        </div>
+                    </div>
+                    
+                    <div class="gift-box relative cursor-pointer group" onclick="unwrapGift(this)">
+                        <div class="gift-wrapper transform transition-transform group-hover:scale-110 animate-bounce" style="animation-delay: 0.3s;">
+                            <div class="text-[4.5rem] filter drop-shadow-lg">🎁</div>
+                        </div>
+                        <div class="gift-content absolute inset-0 flex items-center justify-center opacity-0 scale-0 gift-pop-transition">
+                            <div class="text-[5rem] filter drop-shadow-xl">🍫</div>
+                        </div>
+                    </div>
+
+                    <div class="gift-box relative cursor-pointer group" onclick="unwrapGift(this)">
+                        <div class="gift-wrapper transform transition-transform group-hover:scale-110 animate-bounce" style="animation-delay: 0.6s;">
+                            <div class="text-[6rem] filter drop-shadow-lg">🎁</div>
+                        </div>
+                        <div class="gift-content absolute inset-0 flex items-center justify-center opacity-0 scale-0 gift-pop-transition">
+                            <div class="text-[6rem] filter drop-shadow-xl">👜</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="w-full max-w-md bg-white card-festive p-8 text-center relative z-[60]">
+                <div class="absolute top-0 left-0 right-0 h-3 bg-candy-cane"></div>
+                <span class="text-7xl mb-4 block animate-bounce mt-4">🎁</span>
+                <h1 class="text-3xl font-extrabold text-red-600 font-pacifico">
+                    A Message from the North Pole!
+                </h1>
+                <p class="text-lg text-gray-700 mt-6 font-medium leading-relaxed font-inter">
+                    "Welcome, Beautiful Soul! ✨<br>
+                    Ho ho ho! The stars have whispered that someone incredible is celebrating today. A spirit so bright, you light up the darkest winter nights."
+                </p>
+                <button onclick="goToStage(1)" class="mt-8 w-full px-6 py-3 bg-red-600 text-white font-black text-xl rounded-full shadow-lg hover:bg-red-700 transition transform hover:scale-105 active:scale-95">
+                    Start the Journey
+                </button>
+            </div>
+        </div>
+
+        <div id="stage-1" class="full-screen-stage hidden p-4 flex-col overflow-hidden">
+            <div id="moon-tracker" class="flex space-x-4 mb-8 absolute top-8 left-1/2 transform -translate-x-1/2 z-20">
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center justify-between w-full max-w-7xl px-4 mt-4 relative z-10 h-full">
+                
+                <div class="w-full md:w-1/2 flex justify-center md:justify-center order-1">
+                      <div id="moon-wrapper" class="moon-container cursor-pointer relative">
+                        <div id="moon-slider" class="moon-slider">
+                            <div id="moon-panel-left" class="moon-panel"></div>
+                            <div id="moon-panel-right" class="moon-panel"></div>
+                        </div>
+                        
+                        <p id="moon-instruction" class="text-lg font-bold text-indigo-900 bg-white/80 px-6 py-2 rounded-full shadow-lg backdrop-blur-md transition-all duration-500 hover:scale-110 pointer-events-none select-none animate-pulse">
+                            Tap Me!
+                        </p>
+                    </div>
+                </div>
+
+                <div class="w-full md:w-1/2 text-center md:text-left mt-8 md:mt-0 px-4 md:pl-16 order-2">
+                      <h2 class="text-2xl md:text-3xl font-semibold text-yellow-300 mb-4 font-pacifico drop-shadow-lg">
+                        Find the hidden portal in the night sky...
+                      </h2>
+                      
+                      <div class="min-h-[10rem] flex items-center justify-center md:justify-start">
+                        <p id="moon-caption" class="text-xl md:text-3xl lg:text-4xl font-bold text-white transition-opacity duration-1000 opacity-0 whitespace-pre-line leading-relaxed drop-shadow-md font-inter">
+                            The Night Sky is Changing... Wait for the Magic.
+                        </p>
+                      </div>
+
+                      <div class="relative w-full mt-6 h-16 flex justify-center md:justify-start gap-4"> 
+                        <button id="pause-toggle-btn" onclick="togglePause()" class="px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-lg rounded-full shadow-xl transition duration-300 opacity-0 hidden">
+                            <span id="pause-text">Pause</span>
+                        </button>
+                        <button id="moon-next-btn" onclick="goToStage(2)" class="px-6 py-2 bg-pink-600 hover:bg-pink-500 text-white font-bold text-lg rounded-full shadow-xl transition duration-500 opacity-0 cursor-default" disabled>
+                            Continue to Video Message
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="stage-2" class="full-screen-stage bg-gray-900 hidden relative p-4 justify-center overflow-hidden">
+            
+            <div id="snow-container-stage2" class="absolute inset-0 pointer-events-none z-0">
+                <div class="stage-snow left-[10%]" style="animation-duration: 8s; animation-delay: 0s;">❄️</div>
+                <div class="stage-snow left-[20%]" style="animation-duration: 12s; animation-delay: 2s;">❅</div>
+                <div class="stage-snow left-[35%]" style="animation-duration: 10s; animation-delay: 4s;">❆</div>
+                <div class="stage-snow left-[50%]" style="animation-duration: 15s; animation-delay: 1s;">❄️</div>
+                <div class="stage-snow left-[65%]" style="animation-duration: 9s; animation-delay: 3s;">❅</div>
+                <div class="stage-snow left-[80%]" style="animation-duration: 11s; animation-delay: 5s;">❆</div>
+                <div class="stage-snow left-[90%]" style="animation-duration: 13s; animation-delay: 0s;">❄️</div>
+            </div>
+
+            <div class="absolute top-0 left-0 right-0 h-16 pointer-events-none z-0 flex justify-between px-4 overflow-hidden">
+                <div class="text-4xl animate-swing origin-top" style="animation-duration: 3s;">💡</div>
+                <div class="text-4xl animate-swing origin-top" style="animation-duration: 4s; animation-delay: 1s;">🎄</div>
+                <div class="text-4xl animate-swing origin-top" style="animation-duration: 3.5s; animation-delay: 0.5s;">💡</div>
+                <div class="text-4xl animate-swing origin-top" style="animation-duration: 4.5s; animation-delay: 1.5s;">⭐</div>
+                <div class="text-4xl animate-swing origin-top" style="animation-duration: 3s; animation-delay: 2s;">💡</div>
+                <div class="text-4xl animate-swing origin-top" style="animation-duration: 4s; animation-delay: 0.8s;">🎁</div>
+                <div class="text-4xl animate-swing origin-top" style="animation-duration: 3.2s; animation-delay: 1.2s;">💡</div>
+            </div>
+
+            <div class="absolute left-0 top-0 bottom-0 w-1/4 pointer-events-none hidden md:block overflow-hidden z-0">
+                <div class="absolute top-10 left-10 text-6xl animate-bounce filter drop-shadow-lg" style="animation-duration: 3s;">🎅</div>
+                <div class="absolute top-1/4 left-4 text-4xl animate-pulse text-yellow-300">⭐</div>
+                <div class="absolute top-1/3 left-16 text-6xl animate-wiggle filter drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">☃️</div>
+                <div class="absolute bottom-1/2 left-8 text-5xl animate-float">🧦</div>
+                <div class="absolute bottom-1/4 left-12 text-4xl animate-bounce" style="animation-delay: 1s;">🎁</div>
+                <div class="absolute bottom-10 left-20 text-5xl animate-spin-slow">🍬</div>
+                <div class="absolute top-0 left-24 w-0.5 h-40 bg-gray-500/30"></div>
+                <div class="absolute top-40 left-20 text-4xl animate-swing origin-top">🔔</div>
+            </div>
+
+            <div class="absolute right-0 top-0 bottom-0 w-1/4 pointer-events-none hidden md:block overflow-hidden z-0">
+                <div class="absolute top-0 right-10 w-1 h-32 bg-gray-400/30"></div>
+                <div class="absolute top-32 right-6 text-5xl animate-bounce filter drop-shadow-lg">🔔</div>
+                
+                <div class="absolute top-0 right-24 w-1 h-64 bg-gray-400/30"></div>
+                <div class="absolute top-64 right-20 text-6xl animate-pulse filter drop-shadow-lg">✨</div>
+
+                <div class="absolute top-1/3 right-10 text-5xl animate-float" style="animation-delay: 2s;">🎀</div>
+                <div class="absolute top-1/2 right-4 text-4xl animate-spin-slow filter drop-shadow-lg">❄️</div>
+                <div class="absolute bottom-1/3 right-16 text-6xl animate-pulse filter drop-shadow-[0_0_15px_rgba(255,255,0,0.5)]">🕯️</div>
+                <div class="absolute bottom-20 right-8 text-6xl animate-bounce" style="animation-delay: 0.5s;">🦌</div>
+            </div>
+
+            <div class="w-full max-w-sm p-4 bg-black/80 backdrop-blur-md rounded-2xl shadow-2xl border border-white/20 relative z-10 mx-auto">
+                <p class="text-xl text-yellow-400 mb-4 text-center font-bold">Press Play for a Special Message!</p>
+                <div class="video-container mx-auto h-[40rem] rounded-xl overflow-hidden shadow-inner">
+                    <video 
+                        id="birthdayVideo" 
+                        class="w-full h-full object-contain" 
+                        controls 
+                        preload="metadata" 
+                        poster="https://placehold.co/600x400/1f2937/ffffff?text=Video+Message+Ready"
+                        muted playsinline 
+                        loop="false"
+                    >
+                        <source 
+                            src="Santa.mp4" 
+                            type="video/mp4"
+                        >
+                        Your browser does not support the video tag. Please ensure the video source is correctly set.
+                    </video>
+                    <p id="video-error-message" class="text-red-500 text-center mt-2 hidden">
+                        *Note: Please replace the video source in the code with a valid, publicly accessible URL for your video to play.*
+                    </p>
+                </div>
+            </div>
+            
+            <div id="video-next-door" class="absolute top-1/2 right-4 md:right-16 transform -translate-y-1/2 z-50 transition-all duration-1000 opacity-0 pointer-events-none group" onclick="goToStage(3)">
+                <div class="relative w-36 h-56 cursor-pointer transform group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute -top-3 left-[-10px] right-[-10px] h-6 bg-white rounded-full z-20 filter drop-shadow-md"></div>
+                    
+                    <div class="absolute inset-0 bg-[#5d4037] rounded-t-full shadow-2xl border-4 border-[#3e2723]"></div>
+                    
+                    <div class="absolute top-3 left-3 right-3 bottom-0 bg-[#b71c1c] rounded-t-full shadow-inner border border-[#7f0000] flex flex-col items-center justify-start pt-10">
+                        <div class="w-20 h-10 border border-[#7f0000]/50 mb-2 rounded-t-lg bg-[#c62828]"></div>
+                        <div class="w-20 h-24 border border-[#7f0000]/50 rounded-b-lg bg-[#c62828]"></div>
+                        
+                        <div class="absolute top-28 right-4 w-4 h-4 bg-yellow-400 rounded-full shadow-[1px_1px_2px_rgba(0,0,0,0.5)] group-hover:brightness-125 transition-all"></div>
+                        
+                        <div class="absolute top-8 text-4xl filter drop-shadow-lg">🎄</div>
+                        
+                         <div class="absolute bottom-4 bg-white/90 text-red-800 text-xs font-bold px-2 py-1 rounded shadow-lg animate-bounce">
+                            Enter
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="stage-3" class="full-screen-stage festive-bg hidden p-4 overflow-hidden relative">
+            <div class="absolute inset-0 pointer-events-none z-0">
+                 <div class="stage-snow left-[5%]" style="animation-duration: 10s;">❄️</div>
+                 <div class="stage-snow left-[15%]" style="animation-duration: 14s; animation-delay: 2s;">❅</div>
+                 <div class="stage-snow left-[25%]" style="animation-duration: 11s; animation-delay: 4s;">❆</div>
+                 <div class="stage-snow left-[40%]" style="animation-duration: 16s; animation-delay: 1s;">❄️</div>
+                 <div class="stage-snow left-[55%]" style="animation-duration: 9s; animation-delay: 3s;">❅</div>
+                 <div class="stage-snow left-[70%]" style="animation-duration: 13s; animation-delay: 5s;">❆</div>
+                 <div class="stage-snow left-[85%]" style="animation-duration: 15s; animation-delay: 0s;">❄️</div>
+            </div>
+
+            <div id="confetti-container" class="absolute inset-0 pointer-events-none z-0"></div>
+            
+            <div class="absolute top-0 left-0 right-0 h-24 pointer-events-none z-0 flex justify-around items-start">
+                 <div class="text-5xl animate-swing origin-top" style="animation-duration: 3s;">🎄</div>
+                 <div class="text-5xl animate-swing origin-top" style="animation-duration: 4s; animation-delay: 0.5s;">🌟</div>
+                 <div class="text-5xl animate-swing origin-top" style="animation-duration: 3.5s; animation-delay: 1s;">🎅</div>
+                 <div class="text-5xl animate-swing origin-top" style="animation-duration: 4.5s; animation-delay: 1.5s;">🎁</div>
+                 <div class="text-5xl animate-swing origin-top" style="animation-duration: 3.2s; animation-delay: 2s;">🦌</div>
+            </div>
+
+            <div class="absolute bottom-0 left-10 hidden md:block z-10">
+                <div class="text-[8rem] leading-none filter drop-shadow-2xl">🎄</div>
+                <div class="absolute bottom-2 -right-4 text-5xl animate-bounce">🎁</div>
+            </div>
+            
+            <div class="absolute bottom-0 right-10 hidden md:block z-10">
+                <div class="text-[8rem] leading-none filter drop-shadow-2xl">☃️</div>
+                <div class="absolute bottom-4 -left-4 text-5xl animate-wiggle">❄️</div>
+            </div>
+            
+            <div class="floating-balloon left-[10%]" style="animation-delay: 0s;">🎈</div>
+            <div class="floating-balloon left-[30%]" style="animation-delay: 2s;">✨</div>
+            <div class="floating-balloon left-[70%]" style="animation-delay: 4s;">🎉</div>
+            <div class="floating-balloon left-[90%]" style="animation-delay: 1s;">🎂</div>
+
+            <div class="md:hidden w-full max-w-2xl bg-white/95 backdrop-blur-xl border-4 border-red-500 rounded-3xl shadow-[0_0_100px_rgba(255,215,0,0.3)] p-6 text-center relative z-10 transform transition-all duration-1000 scale-95 opacity-0 translate-y-10 flex flex-col items-center max-h-[85vh] overflow-y-auto" id="final-card-mobile">
+                
+                <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-green-500 to-red-600 font-pacifico mb-4 animate-pulse">
+                    Ho Ho... Oops! 🎅
+                </h1>
+                
+                <div class="text-6xl mb-4 animate-shake filter drop-shadow-lg">🎅🏻</div>
+                
+                <div class="bg-gray-100 text-gray-800 p-4 rounded-2xl relative mb-6 shadow-inner border border-gray-200">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-b-[20px] border-b-gray-100"></div>
+                    <p class="text-lg font-inter font-medium leading-relaxed italic">
+                        "I checked my sleigh twice, and... oh dear. I seem to have left your main present at the North Pole! 📦❄️"
+                    </p>
+                </div>
+
+                <p class="text-lg text-gray-800 font-inter font-bold leading-relaxed mb-6">
+                    But don't worry! I've had a word with <span class="text-red-600 text-2xl font-extrabold underline decoration-wavy decoration-green-500">Sankho</span>...
+                    <br><br>
+                    <span class="text-indigo-900 font-medium">He promised to deliver it personally the moment he meets you! 🎁✨</span>
+                </p>
+                
+                <button onclick="goToStage(0)" class="mt-2 px-8 py-3 bg-gradient-to-r from-red-600 to-green-600 text-white font-black text-xl rounded-full shadow-2xl hover:scale-110 transition-transform border-4 border-white">
+                    I'll remind him! 😉
+                </button>
+            </div>
+
+            <div class="hidden md:flex absolute inset-0 items-center justify-center overflow-hidden z-20">
+                <div class="absolute top-10 right-20 text-[8rem] opacity-90 drop-shadow-[0_0_30px_rgba(255,255,255,0.8)] animate-pulse">🌕</div>
+                <div class="absolute top-20 left-1/4 text-6xl opacity-60 animate-float">☁️</div>
+                <div class="absolute top-40 right-1/3 text-5xl opacity-50 animate-float" style="animation-delay: 2s">☁️</div>
+                
+                <div id="desktop-santa-container" class="relative cursor-pointer group transition-transform hover:scale-105 z-40" onclick="showDesktopMessage()">
+                    <div class="text-[12rem] filter drop-shadow-2xl animate-wiggle select-none">🛷🎅🦌</div>
+                    <div class="text-white text-xl text-center font-bold mt-4 animate-pulse bg-black/50 px-4 py-1 rounded-full border border-white/30 backdrop-blur-sm">Click Santa for a message! 👇</div>
+                </div>
+
+                <div id="desktop-msg-box" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/95 text-gray-900 p-10 rounded-3xl shadow-2xl border-4 border-red-500 max-w-2xl text-center scale-0 transition-all duration-500 z-50 origin-center">
+                    <h2 class="text-5xl font-pacifico text-red-600 mb-6">Happy 21st Birthday! 🎉</h2>
+                    <p class="text-2xl font-inter leading-relaxed text-gray-800">
+                        "I checked my sleigh twice, and... oh dear. I seem to have left your main present at the North Pole 📦❄️<br><br>
+                        But don't worry! I've had a word with <span class="font-bold text-green-600 text-3xl">Sankho</span>...<br>
+                        He promised to deliver it personally the moment he meets you! 🎁✨"
+                    </p>
+                    <button onclick="closeDesktopMessage()" class="mt-8 bg-gradient-to-r from-red-600 to-green-600 text-white px-8 py-3 rounded-full font-black text-xl hover:scale-105 transition-transform border-2 border-white shadow-lg">
+                        Got it, Santa! 😉
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const stages = ['#stage-0', '#stage-1', '#stage-2', '#stage-3'];
+        const moonContainer = document.getElementById('moon-wrapper');
+        const moonSlider = document.getElementById('moon-slider');
+        const panelLeft = document.getElementById('moon-panel-left');
+        const panelRight = document.getElementById('moon-panel-right');
+        
+        const moonNextBtn = document.getElementById('moon-next-btn');
+        const moonCaption = document.getElementById('moon-caption');
+        const moonInstruction = document.getElementById('moon-instruction');
+        const pauseToggleBtn = document.getElementById('pause-toggle-btn');
+        const pauseText = document.getElementById('pause-text');
+        const video = document.getElementById('birthdayVideo');
+        const videoNextDoor = document.getElementById('video-next-door'); 
+        const videoErrorMessage = document.getElementById('video-error-message');
+        const moonTracker = document.getElementById('moon-tracker');
+        
+        const finalCardMobile = document.getElementById('final-card-mobile');
+        const confettiContainer = document.getElementById('confetti-container');
+        
+        let colorIndex = 0;
+        let colorTimeout = null; 
+        let isPaused = false;
+        
+        const transitionDelay = 4000; 
+
+        const colors = [
+            { color: '#00BFFF', shadow: 'rgba(0, 191, 255, 0.8)' }, 
+            { color: '#8A2BE2', shadow: 'rgba(138, 43, 226, 0.8)' }, 
+            { color: '#FF4500', shadow: 'rgba(255, 69, 0, 0.8)' },    
+            { color: '#FFD700', shadow: 'rgba(255, 215, 0, 0.8)' },  
+            { color: '#f97316', shadow: 'rgba(249, 115, 22, 0.8)' },  
+            { color: '#FF69B4', shadow: 'rgba(255, 105, 180, 0.8)' }, 
+            { color: '#ffffff', shadow: 'rgba(255, 255, 255, 1)' }    
+        ];
+
+        const moonMessages = [
+            "The ocean's breath, a crystal blue,\nMy favorite truth, forever true.\nEach passing thought, a lovely breeze,\nYou bring my searching soul ease.", 
+            "A violet hue, profound and deep,\nThe secret wonders that you keep.\nYour graceful mind, a calming sight,\nYou fill the universe with light.", 
+            "Like crimson dawn, your spirit burns,\nFor all the world, the heart yearns.\nKindness shines, a gentle fire,\nA passionate beauty to admire.", 
+            "A golden aura lights the way,\nJust like your smile at break of day.\nYour eyes hold stars, a vibrant grace,\nThe softest glow upon your face.", 
+            "The warmth of sunset, bold and bright,\nA guiding star through endless night.\nYour energy flows, a fierce embrace,\nA loving warmth time can't erase.", 
+            "A rosy blush, so sweet and fair,\nThe perfect gem beyond compare.\nMy final wish, I send to you,\nMy heart's devotion, strong and new.", 
+            "The moon awaits your touch...\nPure and bright, the journey ends.\nA white light shines, where love begins." 
+        ];
+        
+        function initMoonTracker() {
+            moonTracker.innerHTML = '';
+            colors.forEach((c, idx) => {
+                const dot = document.createElement('div');
+                dot.className = 'moon-tracker-dot';
+                dot.style.color = c.color; 
+                moonTracker.appendChild(dot);
+            });
+        }
+        
+        function updateTrackerDot(idx) {
+            const dots = moonTracker.children;
+            for(let i=0; i<dots.length; i++) {
+                if (i <= idx) {
+                    dots[i].style.backgroundColor = colors[i].color;
+                    dots[i].classList.add('active');
+                } else {
+                    dots[i].style.backgroundColor = 'rgba(255,255,255,0.2)';
+                    dots[i].classList.remove('active');
+                }
+            }
+        }
+
+        function getMoonGradient(baseColor) {
+            return `radial-gradient(circle at 30% 30%, ${baseColor} 0%, ${baseColor} 60%, #000000 150%)`;
+        }
+
+        function setPanelColor(panel, index) {
+            if(!panel || index >= colors.length) return;
+            const currentColors = colors[index];
+            panel.style.background = getMoonGradient(currentColors.color);
+        }
+
+        function initializeMoon() {
+            setPanelColor(panelLeft, 0); 
+            setPanelColor(panelRight, 1); 
+            
+            moonContainer.style.boxShadow = `inset -20px -20px 60px rgba(0,0,0,0.8), inset 5px 5px 20px rgba(255,255,255,0.4), 0 0 60px ${colors[0].shadow}`;
+            
+            moonSlider.classList.remove('moon-spinning');
+            moonSlider.style.transform = 'translateX(0%)';
+            
+            updateTrackerDot(0);
+        }
+        
+        function changeMoonColor() {
+            if (isPaused) return;
+
+            let nextIndex = colorIndex + 1;
+            
+            if (nextIndex < colors.length) {
+                setPanelColor(panelRight, nextIndex);
+                
+                moonSlider.classList.add('moon-spinning');
+                
+                setTimeout(() => {
+                    moonCaption.textContent = moonMessages[nextIndex];
+                    updateTrackerDot(nextIndex);
+                    moonContainer.style.boxShadow = `inset -20px -20px 60px rgba(0,0,0,0.8), inset 5px 5px 20px rgba(255,255,255,0.4), 0 0 60px ${colors[nextIndex].shadow}`;
+                }, 1000); 
+
+                setTimeout(() => {
+                    
+                    moonSlider.classList.remove('moon-spinning');
+                    
+                    setPanelColor(panelLeft, nextIndex);
+                    
+                    if (nextIndex + 1 < colors.length) {
+                        setPanelColor(panelRight, nextIndex + 1);
+                    }
+                    
+                    colorIndex = nextIndex;
+
+                    if (colorIndex < colors.length - 1) {
+                        colorTimeout = setTimeout(changeMoonColor, 1000); 
+                    } else {
+                        finishSequence();
+                    }
+                }, 4000); 
+                
+            } else {
+                finishSequence();
+            }
+        }
+        
+        function finishSequence() {
+            moonContainer.classList.add('magical'); 
+            
+            moonInstruction.className = "text-xl font-black text-yellow-300 bg-black/50 px-8 py-3 rounded-full border-2 border-yellow-400 shadow-[0_0_20px_rgba(253,224,71,0.5)] backdrop-blur-md transition-all duration-500 scale-110 pointer-events-none select-none";
+            moonInstruction.classList.remove('opacity-0'); 
+            moonInstruction.textContent = "Portal Ready!";
+            
+            pauseToggleBtn.classList.add('opacity-0', 'hidden'); 
+            moonContainer.removeEventListener('click', startMoonSequence); 
+            moonNextBtn.classList.remove('opacity-0', 'cursor-default');
+            moonNextBtn.classList.add('opacity-100');
+            moonNextBtn.disabled = false;
+        }
+
+        function startMoonSequence() {
+            moonContainer.removeEventListener('click', startMoonSequence); 
+            
+            moonInstruction.classList.add('opacity-0');
+            
+            moonCaption.classList.remove('opacity-0');
+            
+            pauseToggleBtn.classList.remove('hidden');
+            setTimeout(() => pauseToggleBtn.classList.add('opacity-100'), 50);
+
+            colorTimeout = setTimeout(changeMoonColor, 1000); 
+        }
+
+        function togglePause() {
+            if (isPaused) {
+                resumeMoonSequence(true);
+            } else {
+                pauseMoonSequence(true);
+            }
+        }
+        
+        function pauseMoonSequence(fromButton = false) {
+            if (colorTimeout) {
+                clearTimeout(colorTimeout);
+                colorTimeout = null;
+            }
+            isPaused = true;
+            moonInstruction.classList.remove('opacity-0');
+            moonInstruction.className = "text-xl font-black text-yellow-300 bg-black/50 px-8 py-3 rounded-full border-2 border-yellow-400 shadow-[0_0_20px_rgba(253,224,71,0.5)] backdrop-blur-md transition-all duration-500 scale-110 pointer-events-none select-none";
+            moonInstruction.textContent = "Paused.";
+            
+            moonSlider.style.animationPlayState = 'paused';
+            
+            if (fromButton) {
+                pauseText.textContent = "Resume";
+            }
+        }
+
+        function resumeMoonSequence(fromButton = false) {
+            if (colorIndex >= colors.length - 1) return; 
+            
+            moonSlider.style.animationPlayState = 'running';
+            moonInstruction.classList.add('opacity-0');
+            
+            if (!colorTimeout && !moonSlider.classList.contains('moon-spinning')) {
+                 colorTimeout = setTimeout(changeMoonColor, 1000); 
+            }
+            
+            isPaused = false;
+            
+            if (fromButton) {
+                pauseText.textContent = "Pause";
+            }
+        }
+        
+        moonContainer.addEventListener('mousedown', () => pauseMoonSequence(false));
+        moonContainer.addEventListener('mouseup', () => resumeMoonSequence(false));
+        moonContainer.addEventListener('touchstart', () => pauseMoonSequence(false));
+        moonContainer.addEventListener('touchend', () => resumeMoonSequence(false));
+
+        function createConfetti() {
+            const colors = ['#fde68a', '#fca5a5', '#86efac', '#93c5fd', '#d8b4fe', '#fcd34d'];
+            for (let i = 0; i < 50; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = Math.random() * 100 + 'vw';
+                piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                piece.style.animationDelay = (Math.random() * 2) + 's';
+                confettiContainer.appendChild(piece);
+            }
+        }
+
+        function showDesktopMessage() {
+            const msgBox = document.getElementById('desktop-msg-box');
+            if(msgBox) {
+                msgBox.classList.remove('scale-0');
+                msgBox.classList.add('scale-100');
+            }
+        }
+
+        function closeDesktopMessage() {
+            const msgBox = document.getElementById('desktop-msg-box');
+            if(msgBox) {
+                msgBox.classList.remove('scale-100');
+                msgBox.classList.add('scale-0');
+            }
+        }
+
+        function goToStage(stageIndex) {
+            stages.forEach(selector => {
+                document.querySelector(selector).classList.add('hidden');
+            });
+            document.querySelector(stages[stageIndex]).classList.remove('hidden');
+            document.querySelector(stages[stageIndex]).classList.add('flex'); 
+            
+            video.pause();
+            video.currentTime = 0;
+            videoNextDoor.classList.add('opacity-0', 'pointer-events-none');
+            videoErrorMessage.classList.add('hidden');
+
+            if (stageIndex === 1) {
+                initMoonTracker();
+                colorIndex = 0;
+                isPaused = false;
+                
+                initializeMoon();
+                
+                pauseToggleBtn.classList.add('opacity-0', 'hidden'); 
+
+                moonContainer.addEventListener('click', startMoonSequence, { once: true });
+                if (colorTimeout) clearTimeout(colorTimeout); 
+
+                moonInstruction.className = "text-lg font-bold text-indigo-900 bg-white/90 px-8 py-3 rounded-full shadow-[0_0_15px_rgba(255,255,255,0.6)] backdrop-blur-md transition-all duration-500 hover:scale-105 pointer-events-none select-none animate-bounce border-2 border-white";
+                moonInstruction.classList.remove('opacity-0');
+                moonInstruction.textContent = "Tap Me!";
+                
+                moonCaption.textContent = moonMessages[0];
+                moonCaption.classList.add('opacity-0');
+                moonNextBtn.classList.add('opacity-0', 'cursor-default');
+                moonNextBtn.disabled = true;
+                moonContainer.classList.remove('magical'); 
+                pauseText.textContent = "Pause";
+            } else if (stageIndex === 2) {
+                const playPromise = video.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        setTimeout(() => {
+                            videoNextDoor.classList.remove('opacity-0', 'pointer-events-none');
+                        }, 3000); 
+                    }).catch(error => {
+                        console.log("Autoplay prevented:", error);
+                        videoNextDoor.classList.remove('opacity-0', 'pointer-events-none');
+                        videoErrorMessage.classList.remove('hidden');
+                    });
+                }
+            } else if (stageIndex === 3) {
+                confettiContainer.innerHTML = ''; 
+                createConfetti();
+                
+                if(finalCardMobile) {
+                    setTimeout(() => {
+                        finalCardMobile.classList.remove('scale-95', 'opacity-0', 'translate-y-10');
+                        finalCardMobile.classList.add('scale-100', 'opacity-100', 'translate-y-0');
+                    }, 100);
+                }
+            }
+        }
+
+        video.onended = function() {
+        };
+
+        const mainContent = document.getElementById('mainContent');
+        const topNav = document.getElementById('topNav');
+        const bottomNav = document.getElementById('bottomNav');
+        const leftNav = document.getElementById('leftNav');
+        const rightNav = document.getElementById('rightNav');
+        const desktopNav = document.getElementById('desktopNav');
+        const navToggle = document.getElementById('navToggle');
+        const navToggleIcon = document.getElementById('navToggleIcon');
+        const navToggleX = document.getElementById('navToggleX');
+
+        let areNavsOpen = false;
+        const isDesktop = () => window.innerWidth >= 768;
+
+        function openAllNavs() {
+            if (isDesktop()) {
+                desktopNav.classList.remove('-translate-x-full');
+            } else {
+                topNav.classList.remove('-translate-y-full');
+                bottomNav.classList.remove('translate-y-full');
+                leftNav.classList.remove('-translate-x-full');
+                rightNav.classList.remove('translate-x-full');
+                mainContent.classList.add('pt-16', 'pb-16', 'pl-20', 'pr-20');
+                mainContent.classList.remove('pt-16');
+            }
+            navToggleIcon.classList.add('hidden');
+            navToggleX.classList.remove('hidden');
+            areNavsOpen = true;
+        }
+
+        function closeAllNavs() {
+            if (isDesktop()) {
+                desktopNav.classList.add('-translate-x-full');
+            } else {
+                topNav.classList.add('-translate-y-full');
+                bottomNav.classList.add('translate-y-full');
+                leftNav.classList.add('-translate-x-full');
+                rightNav.classList.add('translate-x-full');
+                mainContent.classList.remove('pt-16', 'pb-16', 'pl-20', 'pr-20');
+                mainContent.classList.add('pt-16');
+            }
+            navToggleIcon.classList.remove('hidden');
+            navToggleX.classList.add('hidden');
+            areNavsOpen = false;
+        }
+
+        function toggleAllNavs() {
+            if (areNavsOpen) {
+                closeAllNavs();
+            } else {
+                openAllNavs();
+            }
+        }
+
+        function handleNavClick(linkName) {
+            console.log(`Navigation link clicked: ${linkName}. Closing menus.`);
+            closeAllNavs();
+            return false;
+        }
+
+        navToggle.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            toggleAllNavs();
+        });
+
+        mainContent.addEventListener('click', () => {
+            if (areNavsOpen) {
+                closeAllNavs();
+            }
+        });
+
+        window.addEventListener('resize', () => {
+            if(areNavsOpen) closeAllNavs();
+        });
+        
+        document.addEventListener('mousemove', function(e) {
+            if (window.innerWidth < 768) return;
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snow-particle');
+            const size = Math.random() * 8 + 4; 
+            snowflake.style.width = `${size}px`;
+            snowflake.style.height = `${size}px`;
+            snowflake.style.left = `${e.pageX}px`;
+            snowflake.style.top = `${e.pageY}px`;
+            document.body.appendChild(snowflake);
+            setTimeout(() => {
+                snowflake.remove();
+            }, 1000);
+        });
+        
+        function unwrapGift(giftElement) {
+            if(giftElement.classList.contains('opened')) return;
+            giftElement.classList.add('opened');
+            const wrapper = giftElement.querySelector('.gift-wrapper');
+            const content = giftElement.querySelector('.gift-content');
+            wrapper.classList.add('scale-0', 'opacity-0');
+            content.classList.remove('scale-0', 'opacity-0');
+            content.classList.add('scale-100', 'opacity-100');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            goToStage(0);
+        });
+    </script>
+</body>
+</html>

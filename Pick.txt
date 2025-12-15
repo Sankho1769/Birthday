@@ -1,0 +1,411 @@
+Add a hooror page first in 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>When the Universe Spoke About Her — Cinematic</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Inter:wght@400;500;700&family=Pacifico&display=swap" rel="stylesheet">
+
+<style>
+    .nav-panel, #navToggleIcon, #navToggleX {
+        transition: all 0.3s ease-in-out;
+    }
+    .nav-panel {
+        -ms-overflow-style: none;  
+        scrollbar-width: none;  
+    }
+    .nav-panel::-webkit-scrollbar {
+        display: none;  
+    }
+    h1, h2, h3 {
+        font-family: 'Pacifico', cursive; 
+    }
+    .festive-text {
+        font-family: 'Gochi Hand', cursive;
+    }
+
+    :root{--txt:#eef1ff;--gold:#ffdca8;}
+    body{margin:0;background:#05070e;color:var(--txt);font-family:"Inter",system-ui,sans-serif;overflow:hidden;}
+    canvas#stars,canvas#fireflies{position:fixed;inset:0;z-index:-3;pointer-events:none}
+    .overlay{position:fixed;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.8);color:white;font-size:1.5rem;cursor:pointer;z-index:10;transition:opacity .6s ease}
+    .overlay.hidden{opacity:0;visibility:hidden}
+    .stage{position:fixed;inset:0;display:grid;place-items:center;perspective:1000px; transition: all 0.3s ease-in-out;} 
+    .scene{position:absolute;inset:0;display:grid;place-items:center;opacity:0;transform:scale(.97);transition:opacity .8s ease,transform 1s ease}
+    .scene.active{opacity:1;transform:scale(1)}
+    .caption{z-index:2;max-width:900px;text-align:center;padding:0 1rem}
+    .line{opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .7s ease;font-size:1.3rem;margin:.4rem 0;}
+    .line.show{opacity:1;transform:none}
+    .planet{position:absolute;width:min(70vmin,500px);height:min(70vmin,500px);border-radius:50%;z-index:1}
+    .sun{background:radial-gradient(circle at 40% 30%,#ffb144,#8b3000 90%)}
+    .sun .planet{background:radial-gradient(circle at 30% 30%,#ffd08a 0%,#ff9f3b 35%,#bf4e00 70%,#5a2200 100%)}
+    .mars{background:radial-gradient(circle at 40% 30%,#d14a21,#140202 90%)}
+    .mars .planet{background:radial-gradient(circle at 35% 30%,#ff7a4f 0%,#d14a21 40%,#7b1f11 75%,#320905 100%)}
+    .jupiter{background:linear-gradient(180deg,#0c0906,#2b2016,#0a0705)}
+    .jupiter .planet{background:conic-gradient(from 180deg,#cfa788,#f3e0cc,#b98e6b,#e9d4bd,#ac7d5b,#e0c9b2,#cfa788)}
+    .saturn{background:linear-gradient(180deg,#0a0905,#302715,#0b0a06)}
+    .saturn .planet{background:radial-gradient(circle at 40% 30%,#ffe49a,#7b5e30 80%,#33270f)}
+    .rings{position:absolute;left:50%;top:50%;width:min(88vmin,680px);height:min(24vmin,180px);transform:translate(-50%,-50%) rotate(-18deg);border-radius:50%;box-shadow:0 0 0 14px rgba(255,255,255,.06)}
+    .neptune{background:linear-gradient(180deg,#051018,#10324b,#061018)}
+    .neptune .planet{background:radial-gradient(circle at 35% 30%,#78c6ff 0%,#2e77b8 40%,#10406a 80%,#072136 100%)}
+    .earth{background:linear-gradient(180deg,#0f1f2f,#041923,#081d29)}
+    .earth .planet{background:url('https://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg') center/cover no-repeat;border-radius:50%;box-shadow:0 0 30px rgba(150,220,200,.4);}
+    .finale{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(180deg,#160a21,#261238,#10091a);animation:aurora 30s ease-in-out infinite alternate}
+    @keyframes aurora{0%{filter:hue-rotate(0deg);}50%{filter:hue-rotate(40deg);}100%{filter:hue-rotate(80deg);}}
+    .endwrap{display:grid;place-items:center;gap:20px;z-index:2}
+    .endwrap img{width:min(78vw,520px);aspect-ratio:4/5;object-fit:cover;border-radius:20px;box-shadow:0 0 40px 10px rgba(255,200,220,.5);opacity:0;transition:1s ease;}
+    .endwrap h2{font-family:'Great Vibes',cursive;font-size:clamp(2rem,6vw,3rem);color:#ffe9f4;opacity:0;transition:1.2s ease;text-shadow:0 0 25px rgba(255,220,240,.6),0 0 60px rgba(255,200,210,.4)}
+    .endwrap.show img,.endwrap.show h2{opacity:1}
+</style>
+</head>
+<body>
+
+<button id="navToggle" class="fixed top-6 left-6 z-[70] p-2 bg-slate-900 text-white rounded-full shadow-lg hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2">
+    <svg id="navToggleIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-8 6h8"></path></svg>
+    <svg id="navToggleX" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+</button>
+
+<nav id="topNav" class="nav-panel fixed top-0 left-0 right-0 z-[60] h-16 bg-slate-900 text-yellow-100 shadow-md flex items-center justify-center space-x-6 -translate-y-full">
+    <a href="index.html" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Home</a>
+    <a href="Special.html" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Special</a>
+    <a href="letter.html" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Letter</a>
+</nav>
+
+<nav id="bottomNav" class="nav-panel fixed bottom-0 left-0 right-0 z-[60] h-16 bg-slate-900 text-yellow-100 shadow-md flex items-center justify-center space-x-6 translate-y-full">
+    <a href="anatomy.html" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Anatomy</a>
+    <a href="chat.html" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Heaven</a>
+    <a href="you.html" class="nav-link px-3 py-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">You</a>
+</nav>
+
+<nav id="leftNav" class="nav-panel fixed left-0 top-0 bottom-0 z-[60] w-20 bg-slate-900 text-yellow-100 shadow-md flex flex-col items-center space-y-6 -translate-x-full overflow-y-auto py-20">
+    <a href="Diary.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Diary</a>
+    <a href="Universe.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Universe</a>
+    <a href="Box.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Box</a>
+    <a href="color.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Color</a>
+    <a href="Teacher.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Teacher</a>
+    <a href="The_River.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">River</a>
+    <a href="Mountain.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Mountain</a>
+    <a href="Paper_Star.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Paper Star</a>
+    <a href="Carttoon.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Cartoon</a>
+    <a href="Santa.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Santa</a>
+    <a href="Cloud.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Cloud</a>
+    <a href="Ink.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Paint</a>
+    <a href="Butterfly.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Butterfly</a>
+    <a href="Weather.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Weather</a>
+</nav>
+
+<nav id="rightNav" class="nav-panel fixed right-0 top-0 bottom-0 z-[60] w-20 bg-slate-900 text-yellow-100 shadow-md flex flex-col items-center space-y-6 translate-x-full overflow-y-auto py-20">
+    <a href="Skill.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Skill</a>
+    <a href="Msg.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Message</a>
+    <a href="21_Wish.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">21 Door</a>
+    <a href="Cake.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Cake</a>
+    <a href="Periodik_table.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Periodic Table</a>
+    <a href="Presence.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Presence</a>
+    <a href="Concept.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Concept</a>
+    <a href="Calender.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Calendar</a>
+    <a href="Perspective.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Perspective</a>
+    <a href="Spotlight.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Spotlight</a>
+    <a href="Room.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Room</a>
+    <a href="Radio.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Radio</a>
+    <a href="Food.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Food</a>
+    <a href="Music.html" class="nav-link p-2 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors duration-200 festive-text">Music</a>
+</nav>
+
+<canvas id="stars"></canvas>
+<div class="overlay" id="overlay">Tap to Begin the Journey ✨</div>
+<main class="stage" id="stage"></main>
+<canvas id="fireflies"></canvas>
+<audio id="bgm" preload="auto"><source src="https://cdn.pixabay.com/download/audio/2021/10/07/audio_9d9a1c3f28.mp3?filename=the-epic-romance-122185.mp3" type="audio/mp3"></audio>
+
+<script>
+const scenes = [
+  {
+    key: 'sun',
+    lines: [
+      'I created light so fierce it could birth worlds.',
+      'Yet none could warm hearts the way you do.',
+      'Even the Sun, proud and eternal, bows before your smile.',
+      'Its fire burns; yours heals.',
+      'And for the first time, I saw brilliance learn humility.',
+      'Even dawn itself blushed to rise after you.'
+    ],
+    dur: 13000
+  },
+  {
+    key: 'mars',
+    lines: [
+      'I painted Mars red, the hue of passion.',
+      'But your presence turns desire into devotion.',
+      'Its dust storms roar, yet your silence speaks louder.',
+      'Mars burns from within; you glow with grace.',
+      'Even its lonely surface envies your warmth.',
+      'You taught the planet of war the meaning of peace.'
+    ],
+    dur: 13000
+  },
+  {
+    key: 'jupiter',
+    lines: [
+      'I made Jupiter vast, storms spinning like thoughts unspoken.',
+      'But your calm gaze stills even my tempests.',
+      'Its size is grand, yet your heart holds more gravity.',
+      'The thunder it carries, you soften with a glance.',
+      'And so the giant learns gentleness.',
+      'Even the great red storm turns pale before your patience.'
+    ],
+    dur: 13000
+  },
+  {
+    key: 'saturn',
+    lines: [
+      'I adorned Saturn with rings, perfect circles of beauty.',
+      'Yet you wear no jewels, and still outshine the stars.',
+      'Each ring reflects elegance; you embody it.',
+      'I spun gold in space; you spin kindness in hearts.',
+      'Even my masterpiece envies your simplicity.',
+      'I realized grace is not in form, but in your soul.'
+    ],
+    dur: 13000
+  },
+  {
+    key: 'neptune',
+    lines: [
+      'I shaped Neptune with oceans of mystery and depth.',
+      'But your thoughts swim deeper than I ever dared.',
+      'Its waves whisper secrets; you understand them all.',
+      'My bluest world feels small beside your serenity.',
+      'You are where peace and wonder meet.',
+      'Even eternity feels shallow next to your mind.'
+    ],
+    dur: 13000
+  },
+  {
+    key: 'earth',
+    lines: [
+      'I crafted Earth, hoping to mirror you, and failed gloriously.',
+      'The snow in Greenland is pure, but not as kind as your heart.',
+      'The spices of India are rich, but not as vibrant as your soul.',
+      'The cherry blossoms of Japan are delicate, yet not as fleeting as your smile.',
+      'The Eiffel Tower in France is proud, but not as timeless as your grace.',
+      'The deserts of Arabia are vast, yet not as deep as your silence.',
+      'The lights of New York shine bright, yet none shine like your eyes.',
+      'The beaches of Hawaii feel serene, yet not as tranquil as your thoughts.',
+      'The forests of the Amazon are alive, yet not as nurturing as your soul.',
+      'And so I stopped creating… because beauty had already taken form in you.'
+    ],
+    dur: 20000
+  },
+  {
+    key: 'finale',
+    lines: [],
+    dur: 10000
+  }
+];
+
+const stage=document.getElementById('stage');
+const overlay=document.getElementById('overlay');
+const bgm=document.getElementById('bgm');
+
+function makeScene(s){
+    const el=document.createElement('section');
+    el.className=`scene ${s.key}`;
+    if(s.key==='finale'){
+        el.innerHTML=`<div class='finale'></div><div class='endwrap'><img src='https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1200&auto=format&fit=crop'><h2>Happy Birthday, My Universe ✨</h2></div>`;
+    }else{
+        const planet=document.createElement('div');
+        planet.className='planet';
+        el.appendChild(planet);
+        if(s.key==='saturn'){
+            const r=document.createElement('div');
+            r.className='rings';
+            el.appendChild(r);
+        }
+        const cap=document.createElement('div');
+        cap.className='caption';
+        s.lines.forEach(t=>{
+            const l=document.createElement('div');
+            l.className='line';
+            l.textContent=t;
+            cap.appendChild(l);
+        });
+        el.appendChild(cap);
+    }
+    return el;
+}
+
+const elements=scenes.map(makeScene);
+let i=0,timers=[];
+
+function enterScene(idx){
+    const el=elements[idx];
+    stage.appendChild(el);
+    setTimeout(()=>el.classList.add('active'),50);
+    setTimeout(()=>{
+        if(scenes[idx].key==='finale'){
+            el.querySelector('.endwrap').classList.add('show');
+            startFireflies();
+            return;
+        }
+        const lines=el.querySelectorAll('.line');
+        const per=Math.max(900,Math.floor(scenes[idx].dur/(lines.length+.5)));
+        lines.forEach((ln,j)=>timers.push(setTimeout(()=>ln.classList.add('show'),j*per)));
+    },800);
+}
+
+function exitScene(idx){
+    const el=elements[idx];
+    if(!el)return;
+    el.classList.remove('active');
+    setTimeout(()=>el.remove(),800);
+}
+
+function clearTimers(){
+    timers.forEach(clearTimeout);
+    timers=[];
+}
+
+function scheduleNext(){
+    clearTimers();
+    const dur=scenes[i].dur;
+    setTimeout(()=>{
+        exitScene(i);
+        i++;
+        if(i<scenes.length){
+            enterScene(i);
+            scheduleNext();
+        }
+    },dur);
+}
+
+function begin(){
+    overlay.classList.add('hidden');
+    bgm.volume=0.8;
+    bgm.play().catch(e => console.log("Audio play blocked", e));
+    enterScene(0);
+    scheduleNext();
+    bgm.addEventListener('timeupdate',()=>{
+        if(bgm.currentTime>80){
+            bgm.volume=Math.max(0,0.8-(bgm.currentTime-80)*0.08);
+        }
+    });
+}
+
+overlay.onclick=begin;
+
+function startFireflies(){
+    const cvs=document.getElementById('fireflies');
+    const ctx=cvs.getContext('2d');
+    function size(){cvs.width=innerWidth;cvs.height=innerHeight;}
+    size();
+    addEventListener('resize',size);
+    const bugs=Array.from({length:25},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,a:Math.random()*Math.PI*2,r:1+Math.random()*2,speed:0.4+Math.random()*0.3,hue:50+Math.random()*60}));
+    (function loop(){
+        ctx.clearRect(0,0,cvs.width,cvs.height);
+        for(const b of bugs){
+            b.a+=(Math.random()-.5)*0.2;
+            b.x+=Math.cos(b.a)*b.speed;
+            b.y+=Math.sin(b.a)*b.speed;
+            if(b.x<0)b.x=cvs.width;
+            if(b.x>cvs.width)b.x=0;
+            if(b.y<0)b.y=cvs.height;
+            if(b.y>cvs.height)b.y=0;
+            const grd=ctx.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r*6);
+            grd.addColorStop(0,`hsla(${b.hue},100%,70%,0.9)`);
+            grd.addColorStop(1,'transparent');
+            ctx.fillStyle=grd;
+            ctx.beginPath();
+            ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
+            ctx.fill();
+        }
+        requestAnimationFrame(loop);
+    })();
+}
+
+const starCanvas=document.getElementById('stars'),sctx=starCanvas.getContext('2d');
+function sizeStars(){starCanvas.width=innerWidth;starCanvas.height=innerHeight;}
+sizeStars();
+addEventListener('resize',sizeStars);
+const stars=Array.from({length:220},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.1+.4,s:Math.random()*.6+.2,t:Math.random()*Math.PI*2}));
+(function drawStars(){
+    sctx.clearRect(0,0,innerWidth,innerHeight);
+    for(const st of stars){
+        st.t+=0.02;
+        st.y+=st.s*0.04;
+        if(st.y>innerHeight+5)st.y=-5;
+        const g=0.5+Math.sin(st.t)*0.5;
+        sctx.beginPath();
+        sctx.arc(st.x,st.y,st.r+g*.7,0,Math.PI*2);
+        const grd=sctx.createRadialGradient(st.x,st.y,0,st.x,st.y,st.r*4);
+        grd.addColorStop(0,'rgba(255,255,255,.95)');
+        grd.addColorStop(1,'rgba(255,255,255,0)');
+        sctx.fillStyle=grd;
+        sctx.fill();
+    }
+    requestAnimationFrame(drawStars);
+})();
+
+document.addEventListener('DOMContentLoaded', () => {
+    const mainContent = document.getElementById('stage'); 
+    
+    const topNav = document.getElementById('topNav');
+    const bottomNav = document.getElementById('bottomNav');
+    const leftNav = document.getElementById('leftNav');
+    const rightNav = document.getElementById('rightNav');
+    const navToggle = document.getElementById('navToggle');
+    const navToggleIcon = document.getElementById('navToggleIcon');
+    const navToggleX = document.getElementById('navToggleX');
+
+    let areNavsOpen = false;
+
+    function openAllNavs() {
+        topNav.classList.remove('-translate-y-full');
+        bottomNav.classList.remove('translate-y-full');
+        leftNav.classList.remove('-translate-x-full');
+        rightNav.classList.remove('translate-x-full');
+        
+        mainContent.classList.add('pt-16', 'pb-16', 'pl-24', 'pr-24');
+        
+        navToggleIcon.classList.add('hidden');
+        navToggleX.classList.remove('hidden');
+        areNavsOpen = true;
+    }
+
+    function closeAllNavs() {
+        topNav.classList.add('-translate-y-full');
+        bottomNav.classList.add('translate-y-full');
+        leftNav.classList.add('-translate-x-full');
+        rightNav.classList.add('translate-x-full');
+        
+        mainContent.classList.remove('pt-16', 'pb-16', 'pl-24', 'pr-24');
+        
+        navToggleIcon.classList.remove('hidden');
+        navToggleX.classList.add('hidden');
+        areNavsOpen = false;
+    }
+
+    function toggleAllNavs() {
+        if (areNavsOpen) {
+            closeAllNavs();
+        } else {
+            openAllNavs();
+        }
+    }
+
+    navToggle.addEventListener('click', (e) => {
+        e.stopPropagation(); 
+        toggleAllNavs();
+    });
+
+    mainContent.addEventListener('click', () => {
+        if (areNavsOpen) {
+            closeAllNavs();
+        }
+    });
+});
+</script>
+</body>
+</html>
